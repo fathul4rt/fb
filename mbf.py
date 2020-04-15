@@ -1,9 +1,6 @@
 import requests,bs4,sys,os
 import requests,sys
-from multiprocessing.pool import ThreadPool
-""
-
-	
+from multiprocessing.pool import ThreadPoo
 	
 	  '\e[1;34m' __  ___     ____  _   ___  ____
   /  |/  /_ __/ / /_(_) / _ )/ __/ \033[0m|| Edited FM\033[1;96m
@@ -11,7 +8,7 @@ from multiprocessing.pool import ThreadPool
 /_/  /_/\_,_/_/\__/_/ /____/_/\033[0m     || FB.me/fathul4rt
 ________________________________________________________
 	
-				   ""
+				  
 	class crack:			   
 	def __init__(self):
 		self.ada=[]
