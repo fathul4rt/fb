@@ -1,10 +1,8 @@
 import requests,bs4,sys,os
 import requests,sys
-from multiprocessing.pool import ThreadPoo
-	
-	
-				  
-	class crack:			   
+from multiprocessing.pool import ThreadPool
+
+class crack:
 	def __init__(self):
 		self.ada=[]
 		self.cp=[]
