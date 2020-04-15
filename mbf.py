@@ -2,7 +2,7 @@ import requests,bs4,sys,os
 import requests,sys
 from multiprocessing.pool import ThreadPool
 ""
-class crack:
+
 	
 	
 	  \033[1;96m __  ___     ____  _   ___  ____
@@ -12,7 +12,7 @@ class crack:
 ________________________________________________________
 	
 				   ""
-				   
+	class crack:			   
 	def __init__(self):
 		self.ada=[]
 		self.cp=[]
