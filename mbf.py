@@ -82,8 +82,8 @@ def dumpfl():
 
 
 while True:
-	print "[1] Dump id By Search Name"
-	print "[2] Crack\n"
+	print "1. Input Nama"
+	print "2. Crack\n"
 	r=raw_input("?: pilih: ")
 	if r=="":
 		os.system("clear")
