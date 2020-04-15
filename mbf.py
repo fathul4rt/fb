@@ -5,7 +5,7 @@ from multiprocessing.pool import ThreadPool
 
 	
 	
-	  \033[1;96m __  ___     ____  _   ___  ____
+	  '\e[1;34m' __  ___     ____  _   ___  ____
   /  |/  /_ __/ / /_(_) / _ )/ __/ \033[0m|| Edited FM\033[1;96m
  / /|_/ / // / / __/ / / _  / _/   \033[0m|| Github.com/dz-id\033[1;96m
 /_/  /_/\_,_/_/\__/_/ /____/_/\033[0m     || FB.me/fathul4rt
